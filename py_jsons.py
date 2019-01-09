@@ -31,11 +31,15 @@ def py_jsons(file_url, group_by="", attach_original_file=True):
         html_report.write(HTML_COL5 + "Found JSONs in file " + file_url + HTML_COL6)
         # Main loop to go through the whole log file and find matching expression
         for match in pattern.finditer(log_file):
-            found_json = "%s" % (match.group(0))
-            d = json.loads(found_json)
-            value = d[group_by]
-            html_report.write(HTML_COL1 + value + HTML_COL2)
-            html_report.write(HTML_COL3 + found_json + HTML_COL4)
+            try:
+                found_json = "%s" % (match.group(0))
+                d = json.loads(found_json)
+                value = d[group_by]
+                html_report.write(HTML_COL1 + value + HTML_COL2)
+                html_report.write(HTML_COL3 + found_json + HTML_COL4)
+            except:
+                #Yeah, kinda lame, but let's just ignore exceptions
+                pass
         html_report.write(HTML_STOP)
         html_report.close()
         #Open report in web browser
